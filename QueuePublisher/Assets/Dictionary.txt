@@ -1,0 +1,4 @@
+﻿firstline
+secondline
+thirdline
+lastline

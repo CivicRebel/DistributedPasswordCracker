@@ -1,0 +1,25 @@
+services:
+    consumer:
+        build: ./QueueConsumer
+        deploy:
+            mode: replicated
+            replicas: 3
+        depends_on: 
+            rabbit_queue:
+                condition: service_healthy
+        networks: [defaultnet]
+    rabbit_queue:
+        healthcheck:
+            test: rabbitmq-diagnostics -q ping
+            interval: 30s
+            timeout: 30s
+            retries: 3
+        container_name: rabbitmqcontainer
+        networks: [defaultnet]
+        image: masstransit/rabbitmq
+        ports:
+            - 5672:5672
+            - 15672:15672
+        
+networks: 
+    defaultnet:
